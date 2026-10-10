@@ -13,7 +13,9 @@ __pycache__/
 
 # Environment files
 .env
-.env.*
+.env.local
+.env.production
+!.env.example
 
 # Database
 # Note: allowing backend/food_waste.db to deploy pre-configured initial data
