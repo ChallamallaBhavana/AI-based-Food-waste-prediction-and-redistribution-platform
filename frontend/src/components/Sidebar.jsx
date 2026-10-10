@@ -25,8 +25,8 @@ export function Sidebar() {
           <UtensilsCrossed size={22} />
         </div>
         <div>
-          <h2 style={{ fontSize: '1rem', color: '#ffffff', fontWeight: 700 }}>FoodWaste AI</h2>
-          <p style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Redistribution System</p>
+          <h2 style={{ fontSize: '1.05rem', color: '#ffffff', fontWeight: 800 }}>Food<span style={{ color: '#10b981' }}>Rescue</span></h2>
+          <p style={{ fontSize: '0.72rem', color: '#94a3b8' }}>Food Waste Management</p>
         </div>
       </div>
 

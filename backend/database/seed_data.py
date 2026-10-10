@@ -49,6 +49,30 @@ def seed_all():
         )
         rest_user2.set_password("password123")
 
+        rest_user3 = User(
+            name="Chef Bhavana Reddy",
+            email="tulips@example.com",
+            phone="+91 63040 02109",
+            role="restaurant"
+        )
+        rest_user3.set_password("password123")
+
+        rest_user4 = User(
+            name="Chef Rakesh Joshi",
+            email="greenleaf@example.com",
+            phone="+91 98480 77889",
+            role="restaurant"
+        )
+        rest_user4.set_password("password123")
+
+        rest_user5 = User(
+            name="Chef Meenakshi Sundaram",
+            email="dakshin@example.com",
+            phone="+91 98480 99001",
+            role="restaurant"
+        )
+        rest_user5.set_password("password123")
+
         ngo_user1 = User(
             name="Dr. Radhika Nair",
             email="ngo@example.com",
@@ -65,7 +89,7 @@ def seed_all():
         )
         ngo_user2.set_password("password123")
 
-        db.add_all([admin_user, rest_user1, rest_user2, ngo_user1, ngo_user2])
+        db.add_all([admin_user, rest_user1, rest_user2, rest_user3, rest_user4, rest_user5, ngo_user1, ngo_user2])
         db.flush()
 
         # 2. Restaurants
@@ -80,12 +104,36 @@ def seed_all():
         rest2 = Restaurant(
             user_id=rest_user2.user_id,
             restaurant_name="Paradise Heritage Kitchen",
-            location="MG Road, Secunderabad",
+            location="MG Road, Secunderabad, Hyderabad",
             contact="+91 98480 54321",
             latitude=17.4411,
             longitude=78.4983
         )
-        db.add_all([rest1, rest2])
+        rest3 = Restaurant(
+            user_id=rest_user3.user_id,
+            restaurant_name="Tulips Multi-Cuisine Restaurant",
+            location="Jonnagaddala Gudem, Nalgonda Highway, Hyderabad",
+            contact="+91 63040 02109",
+            latitude=17.3616,
+            longitude=78.5482
+        )
+        rest4 = Restaurant(
+            user_id=rest_user4.user_id,
+            restaurant_name="Green Leaf Gourmet",
+            location="Road No. 36, Jubilee Hills, Hyderabad",
+            contact="+91 98480 77889",
+            latitude=17.4319,
+            longitude=78.4073
+        )
+        rest5 = Restaurant(
+            user_id=rest_user5.user_id,
+            restaurant_name="Dakshin Coastal Kitchen",
+            location="Inorbit Mall Road, Madhapur, HITEC City, Hyderabad",
+            contact="+91 98480 99001",
+            latitude=17.4382,
+            longitude=78.3888
+        )
+        db.add_all([rest1, rest2, rest3, rest4, rest5])
         db.flush()
 
         # 3. NGOs
@@ -219,6 +267,120 @@ def seed_all():
                 "risk": "Low",
                 "safety_status": "SAFE FOR REDISTRIBUTION",
                 "safety_reason": "Bakery items held in dry ambient conditions for 4 hours. Well within 24h limit."
+            },
+            {
+                "restaurant": rest3,
+                "food_name": "South Indian Deluxe Thali Meals",
+                "food_type": "Cooked Meal",
+                "prepared": 120.0,
+                "sold": 88.0,
+                "surplus": 32.0,
+                "prep_time": now - datetime.timedelta(hours=1, minutes=15),
+                "exp_time": now + datetime.timedelta(hours=5),
+                "weather": "Sunny",
+                "festival": "Normal Day",
+                "temp": 66.0,
+                "storage": "Hot Holding",
+                "pred_surplus": 30.5,
+                "demand": "High",
+                "risk": "Moderate",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Inspected at 66°C hot holding. Certified safe under FSSAI cooked meals framework."
+            },
+            {
+                "restaurant": rest3,
+                "food_name": "Ghee Sambar Rice & Potato Poriyal",
+                "food_type": "Cooked Meal",
+                "prepared": 85.0,
+                "sold": 60.0,
+                "surplus": 25.0,
+                "prep_time": now - datetime.timedelta(hours=1, minutes=45),
+                "exp_time": now + datetime.timedelta(hours=4),
+                "weather": "Sunny",
+                "festival": "Normal Day",
+                "temp": 65.0,
+                "storage": "Hot Holding",
+                "pred_surplus": 23.5,
+                "demand": "Medium",
+                "risk": "Low",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Warm distribution temperature verified. Suitable for immediate community dispatch."
+            },
+            {
+                "restaurant": rest4,
+                "food_name": "Quinoa & Roasted Veggie Buddha Bowls",
+                "food_type": "Cooked Meal",
+                "prepared": 75.0,
+                "sold": 52.0,
+                "surplus": 23.0,
+                "prep_time": now - datetime.timedelta(hours=2, minutes=30),
+                "exp_time": now + datetime.timedelta(hours=8),
+                "weather": "Sunny",
+                "festival": "None",
+                "temp": 4.0,
+                "storage": "Refrigerated",
+                "pred_surplus": 21.5,
+                "demand": "Medium",
+                "risk": "Low",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Chilled storage temperature verified at 4.0°C (Compliant with cold-chain guidelines ≤ 5°C)."
+            },
+            {
+                "restaurant": rest4,
+                "food_name": "Spinach & Corn Baked Lasagna",
+                "food_type": "Cooked Meal",
+                "prepared": 60.0,
+                "sold": 40.0,
+                "surplus": 20.0,
+                "prep_time": now - datetime.timedelta(hours=1, minutes=10),
+                "exp_time": now + datetime.timedelta(hours=5),
+                "weather": "Sunny",
+                "festival": "None",
+                "temp": 65.0,
+                "storage": "Hot Holding",
+                "pred_surplus": 18.5,
+                "demand": "Medium",
+                "risk": "Low",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Hot holding verified at 65°C. Safe and ready for immediate food bank dispatch."
+            },
+            {
+                "restaurant": rest5,
+                "food_name": "Coastal Fish Curry & Steamed Ponni Rice",
+                "food_type": "Cooked Meal",
+                "prepared": 95.0,
+                "sold": 70.0,
+                "surplus": 25.0,
+                "prep_time": now - datetime.timedelta(hours=1),
+                "exp_time": now + datetime.timedelta(hours=4),
+                "weather": "Sunny",
+                "festival": "None",
+                "temp": 67.0,
+                "storage": "Hot Holding",
+                "pred_surplus": 24.0,
+                "demand": "High",
+                "risk": "Moderate",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Thermal holding compliant at 67°C. Fast transit recommended for seafood preparations."
+            },
+            {
+                "restaurant": rest5,
+                "food_name": "Malabar Parotta & Vegetable Kurma",
+                "food_type": "Cooked Meal",
+                "prepared": 70.0,
+                "sold": 50.0,
+                "surplus": 20.0,
+                "prep_time": now - datetime.timedelta(hours=1, minutes=30),
+                "exp_time": now + datetime.timedelta(hours=5),
+                "weather": "Sunny",
+                "festival": "None",
+                "temp": 64.0,
+                "storage": "Hot Holding",
+                "pred_surplus": 18.0,
+                "demand": "Medium",
+                "risk": "Low",
+                "safety_status": "SAFE FOR REDISTRIBUTION",
+                "safety_reason": "Hot holding verified at 64°C. Clean inspection passed without observations."
             }
         ]
 

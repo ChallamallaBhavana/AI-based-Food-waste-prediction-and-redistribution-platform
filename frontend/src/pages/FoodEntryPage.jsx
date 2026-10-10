@@ -112,7 +112,7 @@ export function FoodEntryPage() {
     <div className="page-body">
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontSize: '0.86rem', fontWeight: 700 }}>
-          <BrainCircuit size={16} /> MODULE 1: AI SURPLUS PREDICTION
+          <BrainCircuit size={16} /> AI SURPLUS PREDICTION ENGINE
         </div>
         <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginTop: 4 }}>
           Daily Food Entry & ML Surplus Estimator

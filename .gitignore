@@ -16,9 +16,10 @@ __pycache__/
 .env.*
 
 # Database
-*.db
+# Note: allowing backend/food_waste.db to deploy pre-configured initial data
 *.sqlite
 *.sqlite3
+!backend/food_waste.db
 
 # IDE
 .vscode/

@@ -114,7 +114,7 @@ export function NGORecommendationPage() {
     <div className="page-body">
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontSize: '0.86rem', fontWeight: 700 }}>
-          <Sparkles size={16} /> MODULE 3: ALGORITHMIC NGO MATCHING
+          <Building2 size={16} /> ALGORITHMIC NGO MATCHING ENGINE
         </div>
         <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginTop: 4 }}>
           Recommended NGO Redistribution Partners

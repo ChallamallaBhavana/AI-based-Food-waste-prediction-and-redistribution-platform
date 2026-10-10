@@ -1,25 +1,56 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogIn, AlertCircle, Store, HeartHandshake, Shield, Sparkles } from 'lucide-react';
+import { LogIn, AlertCircle, CheckCircle, Store, HeartHandshake, Shield } from 'lucide-react';
 
 export function LoginPage() {
-  const { login, quickSwitch } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const [email, setEmail] = useState('restaurant@example.com');
-  const [password, setPassword] = useState('password123');
+  const [email, setEmail] = useState(location.state?.registeredEmail || '');
+  const [password, setPassword] = useState('');
   const [role, setRole] = useState('restaurant');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(location.state?.message || '');
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (location.state?.message) {
+      setSuccessMessage(location.state.message);
+    }
+  }, [location.state]);
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (error) setError('');
+    if (successMessage) setSuccessMessage('');
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (error) setError('');
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setSuccessMessage('');
+
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      setError('Please enter your registered email address.');
+      return;
+    }
+    if (!password) {
+      setError('Please enter your password.');
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const user = await login(email, password, role);
+      const user = await login(trimmedEmail, password, role);
       if (user.role === 'restaurant') {
         navigate('/restaurant/dashboard');
       } else if (user.role === 'ngo') {
@@ -28,16 +59,10 @@ export function LoginPage() {
         navigate('/admin/dashboard');
       }
     } catch (err) {
-      setError(err.message || 'Login failed. Please check your credentials.');
+      setError(err.message || 'Login failed. Please check your email and password.');
     } finally {
       setLoading(false);
     }
-  };
-
-  const setDemoCredentials = (r, e, p) => {
-    setRole(r);
-    setEmail(e);
-    setPassword(p);
   };
 
   return (
@@ -49,14 +74,34 @@ export function LoginPage() {
       padding: '40px 16px',
       backgroundColor: '#f8fafc'
     }}>
-      <div className="card" style={{ maxWidth: 480, width: '100%', padding: '36px 32px' }}>
+      <div className="card" style={{ maxWidth: 460, width: '100%', padding: '36px 32px' }}>
         <div style={{ textAlign: 'center', marginBottom: 28 }}>
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#0f172a' }}>Sign In to Portal</h2>
           <p style={{ fontSize: '0.88rem', color: '#64748b', marginTop: 6 }}>
-            Access the Food Waste Prediction & Redistribution System
+            Access FoodRescue Food Waste Prediction & Redistribution
           </p>
         </div>
 
+        {/* Success Alert (e.g. from registration redirect) */}
+        {successMessage && (
+          <div style={{
+            backgroundColor: '#ecfdf5',
+            border: '1px solid #a7f3d0',
+            color: '#065f46',
+            padding: '12px 16px',
+            borderRadius: 8,
+            fontSize: '0.86rem',
+            marginBottom: 20,
+            display: 'flex',
+            alignItems: 'center',
+            gap: 10
+          }}>
+            <CheckCircle size={18} style={{ flexShrink: 0, color: '#059669' }} />
+            <span>{successMessage}</span>
+          </div>
+        )}
+
+        {/* Error Alert */}
         {error && (
           <div style={{
             backgroundColor: '#fee2e2',
@@ -70,21 +115,21 @@ export function LoginPage() {
             alignItems: 'center',
             gap: 10
           }}>
-            <AlertCircle size={18} />
+            <AlertCircle size={18} style={{ flexShrink: 0 }} />
             <span>{error}</span>
           </div>
         )}
 
         <form onSubmit={handleSubmit}>
-          {/* Role Selector Tabs */}
+          {/* Account Role Selector */}
           <div className="form-group">
-            <label className="form-label">Select Account Role</label>
+            <label className="form-label">Account Role</label>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
               <button
                 type="button"
-                onClick={() => setDemoCredentials('restaurant', 'restaurant@example.com', 'password123')}
+                onClick={() => { setRole('restaurant'); setError(''); }}
                 style={{
-                  padding: '10px 8px',
+                  padding: '9px 6px',
                   borderRadius: 8,
                   border: role === 'restaurant' ? '2px solid #10b981' : '1px solid #e2e8f0',
                   backgroundColor: role === 'restaurant' ? '#ecfdf5' : '#ffffff',
@@ -92,20 +137,20 @@ export function LoginPage() {
                   fontSize: '0.82rem',
                   fontWeight: 600,
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 6,
                   cursor: 'pointer'
                 }}
               >
-                <Store size={18} /> Restaurant
+                <Store size={16} /> Restaurant
               </button>
 
               <button
                 type="button"
-                onClick={() => setDemoCredentials('ngo', 'ngo@example.com', 'password123')}
+                onClick={() => { setRole('ngo'); setError(''); }}
                 style={{
-                  padding: '10px 8px',
+                  padding: '9px 6px',
                   borderRadius: 8,
                   border: role === 'ngo' ? '2px solid #0284c7' : '1px solid #e2e8f0',
                   backgroundColor: role === 'ngo' ? '#e0f2fe' : '#ffffff',
@@ -113,20 +158,20 @@ export function LoginPage() {
                   fontSize: '0.82rem',
                   fontWeight: 600,
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 6,
                   cursor: 'pointer'
                 }}
               >
-                <HeartHandshake size={18} /> NGO
+                <HeartHandshake size={16} /> NGO
               </button>
 
               <button
                 type="button"
-                onClick={() => setDemoCredentials('admin', 'admin@example.com', 'password123')}
+                onClick={() => { setRole('admin'); setError(''); }}
                 style={{
-                  padding: '10px 8px',
+                  padding: '9px 6px',
                   borderRadius: 8,
                   border: role === 'admin' ? '2px solid #7e22ce' : '1px solid #e2e8f0',
                   backgroundColor: role === 'admin' ? '#f3e8ff' : '#ffffff',
@@ -134,13 +179,13 @@ export function LoginPage() {
                   fontSize: '0.82rem',
                   fontWeight: 600,
                   display: 'flex',
-                  flexDirection: 'column',
                   alignItems: 'center',
-                  gap: 4,
+                  justifyContent: 'center',
+                  gap: 6,
                   cursor: 'pointer'
                 }}
               >
-                <Shield size={18} /> Admin
+                <Shield size={16} /> Admin
               </button>
             </div>
           </div>
@@ -152,8 +197,8 @@ export function LoginPage() {
               className="form-control"
               required
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="e.g. restaurant@example.com"
+              onChange={handleEmailChange}
+              placeholder="e.g. manager@kitchen.com"
             />
           </div>
 
@@ -164,7 +209,7 @@ export function LoginPage() {
               className="form-control"
               required
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               placeholder="••••••••"
             />
           </div>
@@ -184,19 +229,6 @@ export function LoginPage() {
           <Link to="/register" style={{ fontWeight: 600, color: '#10b981' }}>
             Register here
           </Link>
-        </div>
-
-        {/* Quick Demo Help */}
-        <div style={{
-          marginTop: 24,
-          paddingTop: 18,
-          borderTop: '1px solid #f1f5f9',
-          fontSize: '0.78rem',
-          color: '#64748b',
-          textAlign: 'center'
-        }}>
-          <Sparkles size={14} style={{ display: 'inline', verticalAlign: 'middle', marginRight: 4, color: '#f59e0b' }} />
-          Tip: Click any role button above to auto-fill pre-seeded credentials.
         </div>
       </div>
     </div>

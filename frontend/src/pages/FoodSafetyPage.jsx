@@ -48,7 +48,7 @@ export function FoodSafetyPage() {
     <div className="page-body">
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontSize: '0.86rem', fontWeight: 700 }}>
-          <ShieldCheck size={16} /> MODULE 2: FOOD SAFETY COMPLIANCE
+          <ShieldCheck size={16} /> FOOD SAFETY AUDIT & COMPLIANCE
         </div>
         <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginTop: 4 }}>
           FSSAI-Aligned Food Safety Validation Engine

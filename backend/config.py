@@ -12,7 +12,9 @@ class Config:
     
     # Database URL
     db_url = os.getenv('DATABASE_URL', f"sqlite:///{os.path.join(BASE_DIR, 'food_waste.db')}")
-    if db_url.startswith("sqlite:///"):
+    if db_url.startswith("postgres://"):
+        db_url = db_url.replace("postgres://", "postgresql://", 1)
+    elif db_url.startswith("sqlite:///"):
         # Ensure relative SQLite path is resolved relative to BASE_DIR
         db_path = db_url.replace("sqlite:///", "")
         if not os.path.isabs(db_path):

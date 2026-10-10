@@ -34,9 +34,6 @@ export function AuthProvider({ children }) {
 
   const register = async (userData) => {
     const res = await api.register(userData);
-    localStorage.setItem('food_waste_token', res.token);
-    setToken(res.token);
-    setUser(res.user);
     return res.user;
   };
 

@@ -1,4 +1,4 @@
-const API_BASE = '/api';
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || '').replace(/\/$/, '') + '/api';
 
 function getAuthHeaders() {
   const token = localStorage.getItem('food_waste_token');
@@ -23,12 +23,24 @@ async function request(endpoint, options = {}) {
 
   try {
     const res = await fetch(url, config);
-    const data = await res.json().catch(() => ({}));
+    let data = {};
+    try {
+      data = await res.json();
+    } catch {
+      data = {};
+    }
+
     if (!res.ok) {
-      throw new Error(data.error || `HTTP error! status: ${res.status}`);
+      const fallbackMsg = res.status >= 500
+        ? 'A temporary server error occurred. Please try again shortly.'
+        : `Request failed (${res.status})`;
+      throw new Error(data.error || fallbackMsg);
     }
     return data;
   } catch (error) {
+    if (error.name === 'TypeError' && String(error.message).toLowerCase().includes('fetch')) {
+      throw new Error('Unable to connect to server. Please ensure the backend server is running.');
+    }
     console.error(`API Error on ${endpoint}:`, error);
     throw error;
   }
@@ -40,6 +52,7 @@ export const api = {
   register: (data) => request('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
   getMe: () => request('/auth/me'),
   getDemoAccounts: () => request('/auth/demo-accounts'),
+  getAvailableRestaurants: () => request('/auth/restaurants'),
 
   // Food
   createFoodEntry: (data) => request('/food/entry', { method: 'POST', body: JSON.stringify(data) }),

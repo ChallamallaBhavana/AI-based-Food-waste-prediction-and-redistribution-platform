@@ -82,7 +82,7 @@ export function DeliveryTrackingPage() {
     <div className="page-body">
       <div style={{ marginBottom: 24 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, color: '#10b981', fontSize: '0.86rem', fontWeight: 700 }}>
-          <Truck size={16} /> MODULE 4: SMART TRANSPORTATION & DISPATCH
+          <Truck size={16} /> SMART TRANSPORTATION & DISPATCH LOGISTICS
         </div>
         <h1 style={{ fontSize: '1.85rem', fontWeight: 800, color: '#0f172a', marginTop: 4 }}>
           Live Delivery Route Tracking
